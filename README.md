@@ -55,7 +55,7 @@ Welcome to the Bushfires Detector training script
 optional arguments:
   -h, --help            show this help message and exit
   -j JSON_FILE, --json_file JSON_FILE
-                        JSON configuration (default: "/Users/ahestevenz/Desktop/tech-projects/1_code/bushfires-object-detection/config.json")
+                        JSON configuration (default: "/Users/ahestevenz/Desktop/tech-projects/1_code/flood-detection-segmentation/config.json")
   -v, --verbose         Increase logging output (default: INFO)(can be specified several times)
   -p output.prof, --profile output.prof
                         Run with profiling and store output in given file
@@ -83,10 +83,6 @@ Qualitative results using the validation dataset
 In the plot below, you can observe quantitative results using a similarity metric between ground truth and prediction masks.
 
 ![](https://github.com/ahestevenz/flood-detection-segmentation/blob/wip/assets/perf_result.png)
-
-
-
-
 
 ## TODO List 
 - [x] Add Docker container option to run/train models

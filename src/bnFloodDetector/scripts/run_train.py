@@ -132,7 +132,7 @@ def main():
     argparser = argparse.ArgumentParser(
         description='Welcome to the Flood Detector training script')
     argparser.add_argument('-j', '--json_file', help='JSON configuration (default: "%(default)s")', required=False,
-                           default='/Users/ahestevenz/Desktop/tech-projects/1_code/bushfires-object-detection/config.json')
+                           default='/Users/ahestevenz/Desktop/tech-projects/1_code/flood-detection-segmentation/config.json')
 
     # Default Args
     argparser.add_argument('-v', '--verbose', help='Increase logging output  (default: INFO)'
