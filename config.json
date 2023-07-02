@@ -1,0 +1,24 @@
+{
+    "main": {
+        "device": "cpu",
+        "artefacts": "/Users/ahestevenz/Desktop/tech-projects/1_code/flood-detection-segmentation/artefacts"
+    },
+    "data": {
+        "path": "/Users/ahestevenz/Desktop/tech-projects/8_datasets/preprocessed_flood_data",
+        "need_augmentation": true,
+        "image_size": 320
+    },
+    "model": {
+        "encoder": "timm-efficientnet-b0",
+        "weights": "imagenet",
+        "lr": 0.003
+    },
+    "train": {
+        "epochs": 25,
+        "batch_size": 16
+    },
+    "test": {
+        "run": 0,
+        "save_gif": true
+    }
+}
