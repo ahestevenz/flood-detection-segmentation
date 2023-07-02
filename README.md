@@ -78,11 +78,11 @@ To evaluate the model indicated in `config.json` file, run this command:
 
 Qualitative results using the validation dataset
 
-![](https://github.com/ahestevenz/flood-detection-segmentation/blob/wip/assets/valid_results.gif)
+![](https://github.com/ahestevenz/flood-detection-segmentation/blob/main/assets/valid_results.gif)
 
 In the plot below, you can observe quantitative results using a similarity metric between ground truth and prediction masks.
 
-![](https://github.com/ahestevenz/flood-detection-segmentation/blob/wip/assets/perf_result.png)
+![](https://github.com/ahestevenz/flood-detection-segmentation/blob/main/assets/perf_result.png)
 
 ## TODO List 
 - [x] Add Docker container option to run/train models
