@@ -78,7 +78,11 @@ To evaluate the model indicated in `config.json` file, run this command:
 
 Qualitative results using the validation dataset
 
+![](https://github.com/ahestevenz/flood-detection-segmentation/blob/wip/assets/valid_results.gif)
+
 In the plot below, you can observe quantitative results using a similarity metric between ground truth and prediction masks.
+
+![](https://github.com/ahestevenz/flood-detection-segmentation/blob/wip/assets/perf_result.png)
 
 
 
