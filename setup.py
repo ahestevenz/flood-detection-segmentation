@@ -6,7 +6,7 @@ def readme():
         return f.read()
 
 
-setup(name='bnFloodDetector',
+setup(name='flood_detector',
       version='0.1.0',
       description='Flood Detector',
       packages=find_packages('src'),
