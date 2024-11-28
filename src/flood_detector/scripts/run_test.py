@@ -1,10 +1,10 @@
 """Command line script to upload a whole directory tree."""
 from __future__ import print_function
-from bnFloodDetector import utils
-from bnFloodDetector import perf_helpers
-from bnFloodDetector import plot_helpers
-from bnFloodDetector import FloodDetector
-from bnFloodDetector import FloodDatasetManagement
+from flood_detector.utils import load_conf
+from flood_detector.perf_helpers import run, get_perf_metrics
+from flood_detector.plot_helpers import plot_metrics, plot_results
+from flood_detector.flood_detector import FloodDetector
+from flood_detector.flood_dataset_management import FloodDatasetManagement
 
 from builtins import input
 import argparse
@@ -37,7 +37,7 @@ def _main(args):
         logging.error(
             f'{args["json_file"]} does not exist. Please check config.json path and try again')
         return -1
-    conf = utils.load_conf(args['json_file'])
+    conf = load_conf(args['json_file'])
     experiment_path = Path(
         conf['main']['artefacts']+f'/run_{str(conf["test"]["run"])}')
     if not experiment_path.exists():
@@ -47,7 +47,7 @@ def _main(args):
     logging.info(f'Experiment directory: {experiment_path}')
 
     # 2. Load model
-    exp_conf = utils.load_conf(
+    exp_conf = load_conf(
         experiment_path/Path("config.json"), from_string=True)
     model_name = f"flood_detector_{exp_conf['model']['encoder']}_ep_{exp_conf['train']['epochs']}_bs_{exp_conf['train']['batch_size']}"
     model_name = f'{model_name}_augmented_data.pt' if exp_conf[
@@ -56,21 +56,21 @@ def _main(args):
 
     logging.info(f'Building model...')
     device = torch.device(conf['main']['device'])
-    model = FloodDetector.FloodDetector(exp_conf)
+    model = FloodDetector(exp_conf)
     model.to(device)
     model.load_state_dict(torch.load(
         experiment_path/Path(model_name), map_location=device))
     logging.debug(model)
 
     # 3. Testing
-    dataset_mgnt = FloodDatasetManagement.FloodDatasetManagement(exp_conf)
+    dataset_mgnt = FloodDatasetManagement(exp_conf)
     _, validset = dataset_mgnt.get_datasets()
-    results = perf_helpers.run(
+    results = run(
         validset, model, device)
-    metrics = perf_helpers.get_perf_metrics(results)
-    mean, std = plot_helpers.plot_metrics(metrics, experiment_path)
+    metrics = get_perf_metrics(results)
+    mean, std = plot_metrics(metrics, experiment_path)
     logging.info(f'Validation dataset | mean: {mean:5f} / std: {std:5f}')
-    plot_helpers.plot_results(results, experiment_path,
+    plot_results(results, experiment_path,
                               save_to_gif=conf['test']['save_gif'])
 
     return 0

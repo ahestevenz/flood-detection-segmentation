@@ -1,7 +1,7 @@
 from typing import Tuple, Dict, List
 
-from bnFloodDetector import SegmentationDataset
-from bnFloodDetector import plot_helpers
+from flood_detector.segmentation_dataset import SegmentationDataset
+from flood_detector.plot_helpers import show_image
 from torch.utils.data import DataLoader
 from torch.utils.data import Dataset
 import matplotlib.pyplot as plt
@@ -39,21 +39,21 @@ class FloodDatasetManagement:
         image = cv2.imread(image_path.as_posix())
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         mask = cv2.imread(mask_path.as_posix(), cv2.IMREAD_GRAYSCALE) / 255
-        plot_helpers.show_image(image, mask)
+        show_image(image, mask)
         plt.show()
 
     def get_datasets(self) -> Tuple[Dataset, Dataset]:
         train_df, valid_df = train_test_split(
             self.df, test_size=0.2, random_state=42)
         if self.conf["data"]["need_augmentation"]:
-            trainset = SegmentationDataset.SegmentationDataset(
+            trainset = SegmentationDataset(
                 self.conf, train_df, "train")
-            validset = SegmentationDataset.SegmentationDataset(
+            validset = SegmentationDataset(
                 self.conf, valid_df, "valid")
         else:
-            trainset = SegmentationDataset.SegmentationDataset(
+            trainset = SegmentationDataset(
                 self.conf, train_df)
-            validset = SegmentationDataset.SegmentationDataset(
+            validset = SegmentationDataset(
                 self.conf, valid_df)
         logging.debug(f"Dataset | Trainset size: {len(trainset)}")
         logging.debug(f"Dataset | Validset size: {len(validset)}")

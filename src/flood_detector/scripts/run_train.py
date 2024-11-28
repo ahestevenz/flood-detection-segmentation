@@ -13,10 +13,10 @@ import numpy as np
 import torch
 
 # local
-from bnFloodDetector import FloodDatasetManagement
-from bnFloodDetector import FloodDetector
-from bnFloodDetector import plot_helpers
-from bnFloodDetector import utils
+from flood_detector.utils import load_conf, save_conf
+from flood_detector.plot_helpers import show_image
+from flood_detector.flood_detector import FloodDetector
+from flood_detector.flood_dataset_management import FloodDatasetManagement
 
 __author__ = ["Ariel Hernandez <ahestevenz@bleiben.ar>"]
 __copyright__ = "Copyright 2023 Bleiben."
@@ -66,7 +66,7 @@ def _main(args):
         logging.error(
             f'{args["json_file"]} does not exist. Please check config.json path and try again')
         return -1
-    conf = utils.load_conf(args['json_file'])
+    conf = load_conf(args['json_file'])
 
     i = 0
     while Path(conf['main']['artefacts']+f'/run_{str(i)}').is_dir():
@@ -75,13 +75,13 @@ def _main(args):
     experiment_path.mkdir(parents=False, exist_ok=True)
     logging.info(f'Experiment directory: {experiment_path}')
 
-    dataset_mgnt = FloodDatasetManagement.FloodDatasetManagement(conf)
+    dataset_mgnt = FloodDatasetManagement(conf)
     _, validset = dataset_mgnt.get_datasets()
     trainloader, validloader = dataset_mgnt.get_dataloaders()
 
     # 2. Build model
     logging.info(f'Building model...')
-    model = FloodDetector.FloodDetector(conf)
+    model = FloodDetector(conf)
     model.to(conf['main']['device'])
     logging.debug(model)
 
@@ -114,14 +114,14 @@ def _main(args):
     pred_mask = torch.sigmoid(logits_mask)
     pred_mask = (pred_mask > 0.5)*1.0
 
-    plot_helpers.show_image(
+    show_image(
         image, mask, pred_mask.detach().cpu().squeeze(0), experiment_path)
 
     # 5. Final tasks
     conf['main']['experiment'] = experiment_path.as_posix()
     conf['data']['len_train_dataset'] = len(trainloader)
     conf['data']['len_valid_dataset'] = len(validloader)
-    utils.save_conf(conf, experiment_path/Path("config.json"))
+    save_conf(conf, experiment_path/Path("config.json"))
     return 0
 
 
